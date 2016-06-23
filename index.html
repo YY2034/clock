@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<title>Document</title>
+</head>
+<style>
+#canvas{
+	/*border:1px solid #000;*/
+	box-shadow: 2px 2px 10px 0 rgb(0,0,0,0.5);
+	margin:auto;
+	position: absolute;
+	left:0;
+	right:0;
+	top:0;
+	bottom:0;
+	background: url(24.jpeg);
+}
+
+</style>
+<body>
+  <title>canvas</title>
+  <!-- <img src="表.png" alt=""> -->
+
+	<canvas id="canvas" width="600px" height="600px">
+
+	</canvas>
+
+</body>
+<script>
+	var canvas = document.querySelector('#canvas')
+	var ctx = canvas.getContext('2d')
+         // 花表盘
+      var  r = function(deg){
+      	return Math.PI/180*deg
+      }
+      var drowClock = function(){
+      var img = new Image();
+      img.src = "biao7.jpg";
+      img.onload = function(){
+     	var imgs = ctx.createPattern(img,'no-repeat');
+      ctx.fillStyle = imgs;
+      ctx.drawImage(img,65,65,550,450)
+
+      ctx.save();
+      ctx.translate(350,270)
+       // 时针
+     ctx.save();
+     ctx.beginPath()
+
+     var now = new Date()
+     var da = now.getHours();
+     var darks = now.getMinutes();
+     var dark = now.getSeconds();
+     var degs = ((da*60*60+darks*60+dark)/43200)*360
+
+     ctx.rotate(r(degs))
+     ctx.moveTo(0,5);
+     ctx.lineTo(0,20);
+     ctx.moveTo(5,0);
+     ctx.arc(0,0,5,0,r(360))
+     ctx.moveTo(0,-5);
+     ctx.lineTo(0,-80)
+		 ctx.lineWidth=6;
+     ctx.stroke()
+     ctx.closePath()
+     ctx.restore();
+
+    // // 分针
+     ctx.save();
+     ctx.beginPath()
+
+
+     var now = new Date()
+     var darks = now.getMinutes();
+     var dark = now.getSeconds();
+     var deg = ((darks*60+dark)/3600)*360;
+     ctx.rotate(r(deg))
+     ctx.moveTo(0,5);
+     ctx.lineTo(0,20);
+     ctx.moveTo(5,0);
+   	 ctx.arc(0,0,5,0,r(360))
+     ctx.moveTo(0,-5);
+     ctx.lineTo(0,-100)
+		 ctx.lineWidth=3;
+     ctx.stroke()
+     ctx.closePath()
+     ctx.restore();
+
+     // 画针
+     ctx.save();
+     ctx.beginPath()
+
+     var now = new Date()
+     var dark = now.getSeconds();
+     ctx.rotate(dark*r(6))
+     ctx.moveTo(0,5);
+     ctx.lineTo(0,20);
+     ctx.moveTo(5,0);
+     ctx.arc(0,0,5,0,r(360))
+     ctx.moveTo(0,-5);
+     ctx.lineTo(0,-120)
+		 ctx.lineWidth=2;
+
+	   ctx.stroke()
+	   ctx.closePath()
+	   ctx.restore();
+	   ctx.restore();
+	   ctx.restore();
+    }
+  };
+      drowClock();
+      setInterval(drowClock,1000)
+</script>
+</html>
